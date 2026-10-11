@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Predictive Maintenance System</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+        :root {
+            --bg: #1c2023;
+            --panel: #24292d;
+            --panel-alt: #2b3136;
+            --border: #40474d;
+            --fg: #ece9e2;
+            --muted: #9ba3a8;
+            --accent: #e8a33d;
+            --accent-dark: #b97d28;
+            --danger: #d1503a;
+            --safe: #5fa876;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            font-family: 'IBM Plex Sans', sans-serif;
+            line-height: 1.55;
+            margin: 0;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        .hazard-bar {
+            height: 6px;
+            background-image: repeating-linear-gradient(45deg, var(--accent) 0 14px, #161a1c 14px 28px);
+        }
+
+        .wrap {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 0 24px 60px;
+        }
+
+        header.site-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+            padding: 26px 0 30px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 34px;
+        }
+
+        .plate-title {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .plate-title .tick {
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            flex-shrink: 0;
+        }
+
+        nav.site-nav a {
+            text-decoration: none;
+            color: var(--muted);
+            font-size: .95rem;
+            font-weight: 500;
+            border-bottom: 1px solid transparent;
+        }
+
+        nav.site-nav a:hover {
+            color: var(--fg);
+            border-bottom-color: var(--accent);
+        }
+
+        .panel {
+            position: relative;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            padding: 30px 28px;
+        }
+
+        .rivet {
+            position: absolute;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #767d83, #2a2f33 70%);
+            box-shadow: 0 1px 0 rgba(0, 0, 0, .6) inset;
+        }
+
+        .rivet.tl {
+            top: 10px;
+            left: 10px;
+        }
+
+        .rivet.tr {
+            top: 10px;
+            right: 10px;
+        }
+
+        .rivet.bl {
+            bottom: 10px;
+            left: 10px;
+        }
+
+        .rivet.br {
+            bottom: 10px;
+            right: 10px;
+        }
+
+        .panel-label {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            font-size: .82rem;
+            color: var(--muted);
+            margin: 0 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .console-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 860px) {
+            .console-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        .field label {
+            display: block;
+            font-size: .86rem;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .field .unit {
+            color: var(--accent);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .8rem;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            background: var(--panel-alt);
+            border: 1px solid var(--border);
+            color: var(--fg);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .95rem;
+            padding: 10px 12px;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .run-btn {
+            width: 100%;
+            background: var(--accent);
+            color: #1c1300;
+            border: none;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 600;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            font-size: .95rem;
+            padding: 14px;
+            cursor: pointer;
+            margin-top: 6px;
+        }
+
+        .run-btn:hover {
+            background: var(--accent-dark);
+        }
+
+        .run-btn:disabled {
+            background: var(--border);
+            color: var(--muted);
+            cursor: progress;
+        }
+
+        .readout {
+            text-align: left;
+        }
+
+        .readout-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .led {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #51575c;
+            box-shadow: inset 0 0 0 2px rgba(0, 0, 0, .4);
+            flex-shrink: 0;
+        }
+
+        .led.safe {
+            background: var(--safe);
+            box-shadow: 0 0 9px var(--safe);
+        }
+
+        .led.danger {
+            background: var(--danger);
+            box-shadow: 0 0 9px var(--danger);
+        }
+
+        .status-text {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .status-text.safe {
+            color: var(--safe);
+        }
+
+        .status-text.danger {
+            color: var(--danger);
+        }
+
+        .confidence-label {
+            color: var(--muted);
+            font-size: .85rem;
+            margin-bottom: 6px;
+        }
+
+        .confidence-value {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+
+        .gauge {
+            height: 8px;
+            background: var(--panel-alt);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .gauge-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--muted);
+            transition: width .4s ease;
+        }
+
+        .gauge-fill.safe {
+            background: var(--safe);
+        }
+
+        .gauge-fill.danger {
+            background: var(--danger);
+        }
+
+        .readout-empty {
+            color: var(--muted);
+            font-size: .9rem;
+        }
+
+        .readout-error {
+            color: var(--danger);
+            font-size: .9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hazard-bar"></div>
+    <div class="wrap">
+        <header class="site-header">
+            <h1 class="plate-title"><span class="tick"></span>Predictive Maintenance System</h1>
+            <nav class="site-nav">
+                <a href="{{ url_for('main.about') }}">About</a>
+            </nav>
+        </header>
+
+        <div class="console-grid">
+            <div class="panel">
+                <span class="rivet tl"></span><span class="rivet tr"></span>
+                <span class="rivet bl"></span><span class="rivet br"></span>
+                <p class="panel-label">Machine Readings</p>
+
+                <form id="predict-form">
+                    <div class="field">
+                        <label for="type">Machine type</label>
+                        <select id="type" required>
+                            <option value="L">L — Low</option>
+                            <option value="M">M — Medium</option>
+                            <option value="H">H — High</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="air_temp">Air temperature <span class="unit">K</span></label>
+                        <input type="number" id="air_temp" step="0.01" min="0" required>
+                    </div>
+                    <div class="field">
+                        <label for="process_temp">Process temperature <span class="unit">K</span></label>
+                        <input type="number" id="process_temp" step="0.01" min="0" required>
+                    </div>
+                    <div class="field">
+                        <label for="rpm">Rotational speed <span class="unit">rpm</span></label>
+                        <input type="number" id="rpm" step="1" min="0" required>
+                    </div>
+                    <div class="field">
+                        <label for="torque">Torque <span class="unit">Nm</span></label>
+                        <input type="number" id="torque" step="0.01" min="0" required>
+                    </div>
+                    <div class="field">
+                        <label for="tool_wear">Tool wear <span class="unit">min</span></label>
+                        <input type="number" id="tool_wear" step="1" min="0" required>
+                    </div>
+                    <button type="submit" class="run-btn" id="run-btn">Run diagnostic</button>
+                </form>
+            </div>
+
+            <div class="panel readout">
+                <span class="rivet tl"></span><span class="rivet tr"></span>
+                <span class="rivet bl"></span><span class="rivet br"></span>
+                <p class="panel-label">Diagnostic Readout</p>
+
+                <div id="readout-content">
+                    <p class="readout-empty">Enter the machine's readings and run a diagnostic to see its result here.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('predict-form');
+        const runBtn = document.getElementById('run-btn');
+        const readout = document.getElementById('readout-content');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const payload = {
+                "Type": document.getElementById('type').value,
+                "Air temperature [K]": parseFloat(document.getElementById('air_temp').value),
+                "Process temperature [K]": parseFloat(document.getElementById('process_temp').value),
+                "Rotational speed [rpm]": parseFloat(document.getElementById('rpm').value),
+                "Torque [Nm]": parseFloat(document.getElementById('torque').value),
+                "Tool wear [min]": parseFloat(document.getElementById('tool_wear').value)
+            };
+
+            runBtn.disabled = true;
+            runBtn.textContent = 'Running diagnostic…';
+
+            try {
+                const response = await fetch("{{ url_for('main.predict') }}", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Server returned an error (' + response.status + ')');
+                }
+
+                const data = await response.json();
+                renderResult(data);
+
+            } catch (err) {
+                readout.innerHTML = '<p class="readout-error">Could not reach the diagnostic service. ' + err.message + '</p>';
+            } finally {
+                runBtn.disabled = false;
+                runBtn.textContent = 'Run diagnostic';
+            }
+        });
+
+        function renderResult(data) {
+            const isFailure = data.prediction === 1;
+            const stateClass = isFailure ? 'danger' : 'safe';
+            const pct = (data.probability * 100).toFixed(1);
+
+            readout.innerHTML = `
+                <div class="readout-row">
+                    <span class="led ${stateClass}"></span>
+                    <span class="status-text ${stateClass}">${data.risk_label}</span>
+                </div>
+                <p class="confidence-label">Failure risk</p>
+                <p class="confidence-value">${pct}%</p>
+                <div class="gauge"><div class="gauge-fill ${stateClass}" style="width:${pct}%"></div></div>
+            `;
+        }
+    </script>
+</body>
+
+</html>

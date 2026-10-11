@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Predictive Maintenance Manual</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+        :root {
+            --bg: #1c2023;
+            --panel: #24292d;
+            --panel-alt: #2b3136;
+            --border: #40474d;
+            --fg: #ece9e2;
+            --muted: #9ba3a8;
+            --accent: #e8a33d;
+            --accent-dark: #b97d28;
+            --danger: #d1503a;
+            --safe: #5fa876;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            font-family: 'IBM Plex Sans', sans-serif;
+            line-height: 1.55;
+            margin: 0;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        .hazard-bar {
+            height: 6px;
+            background-image: repeating-linear-gradient(45deg, var(--accent) 0 14px, #161a1c 14px 28px);
+        }
+
+        .wrap {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+
+        header.site-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+            padding: 26px 0 28px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 32px;
+        }
+
+        .plate-title {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .plate-title .tick {
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            flex-shrink: 0;
+        }
+
+        nav.site-nav a {
+            text-decoration: none;
+            color: var(--muted);
+            font-size: .92rem;
+            font-weight: 500;
+            border-bottom: 1px solid transparent;
+        }
+
+        nav.site-nav a:hover {
+            color: var(--fg);
+            border-bottom-color: var(--accent);
+        }
+
+        .lede {
+            font-size: 1.05rem;
+            color: var(--fg);
+            max-width: 620px;
+        }
+
+        .panel {
+            position: relative;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            padding: 28px 26px;
+            margin-top: 26px;
+        }
+
+        .rivet {
+            position: absolute;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #767d83, #2a2f33 70%);
+            box-shadow: 0 1px 0 rgba(0, 0, 0, .6) inset;
+        }
+
+        .rivet.tl {
+            top: 10px;
+            left: 10px;
+        }
+
+        .rivet.tr {
+            top: 10px;
+            right: 10px;
+        }
+
+        .rivet.bl {
+            bottom: 10px;
+            left: 10px;
+        }
+
+        .rivet.br {
+            bottom: 10px;
+            right: 10px;
+        }
+
+        .panel-label {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            font-size: .82rem;
+            color: var(--muted);
+            margin: 0 0 18px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .spec-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 18px;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .spec-row:last-child {
+            border-bottom: none;
+        }
+
+        .spec-row .name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .88rem;
+            color: var(--accent);
+        }
+
+        .spec-row .desc {
+            color: var(--fg);
+            font-size: .94rem;
+        }
+
+        @media (max-width: 620px) {
+            .spec-row {
+                grid-template-columns: 1fr;
+                gap: 5px;
+            }
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            font-size: .85rem;
+            color: var(--fg);
+            text-decoration: none;
+            border: 1px solid var(--border);
+            padding: 10px 18px;
+        }
+
+        .back-link:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hazard-bar"></div>
+    <div class="wrap">
+        <header class="site-header">
+            <h1 class="plate-title"><span class="tick"></span>Predictive Maintenance System</h1>
+            <nav class="site-nav">
+                <a href="{{ url_for('main.home') }}">Diagnostic Tool</a>
+            </nav>
+        </header>
+
+        <p class="lede">This tool reads six measurements taken from an industrial machine and predicts whether it is at
+            risk of failing soon, based on patterns learned from thousands of past machine readings.</p>
+
+        <div class="panel">
+            <span class="rivet tl"></span><span class="rivet tr"></span>
+            <span class="rivet bl"></span><span class="rivet br"></span>
+            <p class="panel-label">Input Readings</p>
+            <div class="spec-row">
+                <div class="name">Machine type</div>
+                <div class="desc">A build-quality grade — Low, Medium, or High. Select whichever category the machine
+                    falls into.</div>
+            </div>
+            <div class="spec-row">
+                <div class="name">Air temperature (K)</div>
+                <div class="desc">The temperature of the air around the machine, in Kelvin — a scale similar to Celsius
+                    but starting from absolute zero. Room temperature is roughly 300K.</div>
+            </div>
+            <div class="spec-row">
+                <div class="name">Process temperature (K)</div>
+                <div class="desc">How hot the machine runs internally while operating, also in Kelvin. Usually a few
+                    degrees above the air temperature.</div>
+            </div>
+            <div class="spec-row">
+                <div class="name">Rotational speed (rpm)</div>
+                <div class="desc">How fast the machine's main spinning part turns, in revolutions per minute — the same
+                    reading as an RPM gauge.</div>
+            </div>
+            <div class="spec-row">
+                <div class="name">Torque (Nm)</div>
+                <div class="desc">The twisting force the motor applies, in Newton-metres — in plain terms, how hard the
+                    motor is working.</div>
+            </div>
+            <div class="spec-row">
+                <div class="name">Tool wear (min)</div>
+                <div class="desc">Minutes the cutting tool has been in use since it was last replaced. More wear
+                    increases failure risk.</div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <span class="rivet tl"></span><span class="rivet tr"></span>
+            <span class="rivet bl"></span><span class="rivet br"></span>
+            <p class="panel-label">Output Reading</p>
+            <div class="spec-row">
+                <div class="name">Result</div>
+                <div class="desc">Normal or Failure Risk — a direct read on whether the entered values match the pattern
+                    of machines that failed.</div>
+            </div>
+            <div class="spec-row">
+                <div class="name">Failure risk (aka) Confidence</div>
+                <div class="desc">How sure the model is, shown as a percentage — similar to a weather forecast's chance
+                    of rain. A high percentage is a strong warning, not a guarantee.</div>
+            </div>
+        </div>
+
+        <a href="{{ url_for('main.home') }}" class="back-link">Back to diagnostic tool</a>
+    </div>
+</body>
+
+</html>
