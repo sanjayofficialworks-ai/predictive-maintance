@@ -33,7 +33,8 @@ The interface has two pages.
 
 **A healthy machine.** Inputs: type L, air 298.1 K, process 308.6 K, 1500 rpm, 42.3 Nm, 120 min of tool wear. The light is green, the label reads Normal, and failure risk is 0.0%.
 
-![Normal result](docs/screenshots/01-normal-result.png)
+![Normal result](<img width="1860" height="929" alt="Screenshot from 2026-10-11 19-20-52" src="https://github.com/user-attachments/assets/1145164a-edea-4864-b18f-206fd801e802" />
+)
 
 **A machine at risk.** Inputs: type L, air 298.1 K, process 308.6 K, 1300 rpm, 70 Nm, 230 min of tool wear. The light is red, the label reads Failure Risk, and failure risk is 98.0%. The low speed, high torque, and heavy tool wear match the conditions that cause failures in the dataset.
 
