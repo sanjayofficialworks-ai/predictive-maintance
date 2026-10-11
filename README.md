@@ -33,20 +33,19 @@ The interface has two pages.
 
 **A healthy machine.** Inputs: type L, air 298.1 K, process 308.6 K, 1500 rpm, 42.3 Nm, 120 min of tool wear. The light is green, the label reads Normal, and failure risk is 0.0%.
 
-![Normal result](<img width="1860" height="929" alt="Screenshot from 2026-10-11 19-20-52" src="https://github.com/user-attachments/assets/1145164a-edea-4864-b18f-206fd801e802" />
-)
+![Normal result](<img width="1860" height="929" alt="Screenshot from 2026-10-11 19-20-52" src="https://github.com/user-attachments/assets/1145164a-edea-4864-b18f-206fd801e802" />)
 
 **A machine at risk.** Inputs: type L, air 298.1 K, process 308.6 K, 1300 rpm, 70 Nm, 230 min of tool wear. The light is red, the label reads Failure Risk, and failure risk is 98.0%. The low speed, high torque, and heavy tool wear match the conditions that cause failures in the dataset.
 
-![Failure risk result](docs/screenshots/02-failure-risk-result.png)
+![Failure risk result](<img width="1860" height="929" alt="Screenshot from 2026-10-11 19-21-47" src="https://github.com/user-attachments/assets/bdea27eb-3755-4c63-bbc9-a8e2cff4b01a" />)
 
 **About page, inputs.** Each of the six readings is explained in plain language, including units.
 
-![About page: input readings](docs/screenshots/03-about-inputs.png)
+![About page: input readings]<img width="1860" height="929" alt="Screenshot from 2026-10-11 19-22-01" src="https://github.com/user-attachments/assets/751ae066-67b6-40ba-a09b-6578524cc98d" />)
 
 **About page, output.** Explains what the result and the failure risk percentage mean.
 
-![About page: output reading](docs/screenshots/04-about-output.png)
+![About page: output reading](<img width="1860" height="929" alt="Screenshot from 2026-10-11 19-22-10" src="https://github.com/user-attachments/assets/02dc3b8b-1daa-4bef-aa9b-5f20f4d6a8a2" />)
 
 ---
 
