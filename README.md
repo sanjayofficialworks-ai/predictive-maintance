@@ -15,8 +15,6 @@ A web app that predicts whether an industrial machine is at risk of failing, usi
 | Maintenance technicians | Enter the readings from a machine's display and run a diagnostic | A fast second opinion on whether a machine needs attention, with no data science knowledge needed |
 | Plant supervisors | Check several machines during a shift | A way to prioritize which machines to inspect first |
 | Operations and planning managers | Use the failure risk percentage to compare machines | Earlier warning, so repairs can be scheduled before a breakdown stops production |
-| Students and learners | Read the About page and explore the notebooks | A complete worked example of an ML project taken to deployment |
-| Recruiters and engineers reviewing this portfolio | Open the live app and read this document | Evidence of the whole workflow: data work, modeling, API design, containerization, deployment |
 
 Why it matters: unplanned machine failures stop production and cost money. A model that flags risky readings early lets a team replace worn tools or check a machine before it fails, instead of after.
 
